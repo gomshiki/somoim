@@ -2,7 +2,7 @@
 "use client"
 import { useState, useEffect } from "react"
 import { signInWithPhoneNumber, RecaptchaVerifier } from "firebase/auth"
-import { auth } from "../firebase";
+import { auth } from "../../firebase";
 import {useRouter} from "next/navigation"
 import axios from "axios";
 
@@ -113,7 +113,7 @@ export default function authCheck(){
 
         try {
             
-            const res = await axios.post('/auth/register',{  // 경로 : NEXT_PUBLIC_SERVER_BASE_URL + api + '/auth/register' -> 앞부분은 _app.tsx 에 정의
+            const res = await axios.get('/auth/register',{  // 경로 : NEXT_PUBLIC_SERVER_BASE_URL + api + '/auth/register' -> 앞부분은 _app.tsx 에 정의
                 phoneNumber : phoneNumber.subString(3)
             
             })
@@ -128,27 +128,23 @@ export default function authCheck(){
 
 
     return(
-        <div className="bg-white">
-            <div className="flex flex-col items-center justify-center h-screen p-6">
-                <div className='w-10/12 mx-auto md:w-96'>
-                    <h1 className='mb-2 text-lg font-medium text-center'>번호 인증</h1>
-                    <form>
-                        <div className="relative">
-                            <input type="text" value={phoneNumber} onChange={handleChange} onKeyDown={(e) => activeEnter(e)} placeholder="010-0000-0000" className="float-left w-4/5 p-3 my-2 border bg-zinc-100 rounded-lg border-gray-400 bg-gray-50 trasition focus:bg-white hover:bg-white"/>
-                            <button onClick={onSignInSubmit} type="submit" id="sign-in-button" className="  w-1/5 p-3 my-2 mb-1 text-xs font-bold text-white border rounded-3xl float-right bg-blue-400">
-                                번호요청
-                            </button>
-                        </div>
-                    </form>
-                    <form>
-                        <input type="text" value={authNumber} onChange={handleAuthCode}placeholder="인증번호를 입력하세요" className=" w-full p-3 my-2 border bg-zinc-100 rounded-lg border-gray-400 bg-gray-50 trasition focus:bg-white hover:bg-white"/>
-                        <button onClick={checkAuthCode} type="submit" className=" w-full p-3 my-2 mb-1 text-xs font-bold text-white border rounded-3xl  bg-blue-400">
-                            다음
-                        </button>
-
-                    </form>
-                </div>
-            </div>
+    <>
+    <h1 className='mb-2 text-lg font-medium text-center'>번호 인증</h1>
+    <form>
+        <div className="relative">
+            <input type="text" value={phoneNumber} onChange={handleChange} onKeyDown={(e) => activeEnter(e)} placeholder="010-0000-0000" className="float-left w-4/5 p-3 my-2 border bg-zinc-100 rounded-lg border-gray-400 bg-gray-50 trasition focus:bg-white hover:bg-white"/>
+            <button onClick={onSignInSubmit} type="submit" id="sign-in-button" className="  w-1/5 p-3 my-2 mb-1 text-xs font-bold text-white border rounded-3xl float-right bg-blue-400">
+                번호요청
+            </button>
         </div>
+    </form>
+    <form>
+        <input type="text" value={authNumber} onChange={handleAuthCode}placeholder="인증번호를 입력하세요" className=" w-full p-3 my-2 border bg-zinc-100 rounded-lg border-gray-400 bg-gray-50 trasition focus:bg-white hover:bg-white"/>
+        <button onClick={checkAuthCode} type="submit" className=" w-full p-3 my-2 mb-1 text-xs font-bold text-white border rounded-3xl  bg-blue-400">
+            다음
+        </button>
+
+    </form>
+    </>
     )
 }
